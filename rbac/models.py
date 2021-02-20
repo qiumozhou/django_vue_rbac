@@ -6,7 +6,6 @@ from django.db import models
 # Create your models here.
 
 
-
 class User(AbstractUser):
     GENDER_TYPE = (
         (1, "男"),
@@ -28,26 +27,27 @@ class User(AbstractUser):
         verbose_name_plural = "用户"
 
 
-
 class Menu(models.Model):
-    name = models.CharField(max_length=50)
-    url = models.CharField(max_length=50)
+    name = models.CharField(max_length=50,null=True,blank=True)
+    title = models.CharField(max_length=50,null=True,blank=True)
+    path = models.CharField(max_length=50,null=True,blank=True)
     icon = models.CharField(max_length=50)
-    is_active = models.IntegerField(default=1)
+    component = models.CharField(max_length=50,null=True,blank=True)
     parent_id = models.ForeignKey('self',null=True,blank=True,on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.title
 
     class Meta:
         db_table = 'tb_menu'
         verbose_name_plural = "菜单"
 
+
 class Permission(models.Model):
     name = models.CharField(max_length=20)
-    url = models.CharField(max_length=20)
-    is_active = models.IntegerField(default=1)
-    menu = models.ForeignKey("Menu",on_delete=models.CASCADE)
+    model = models.CharField(max_length=20,null=True,blank=True)
+    method =  models.CharField(max_length=20)
+    menu = models.ForeignKey("Menu",on_delete=models.CASCADE,related_name="permissions")
 
     def __str__(self):
         return self.name
@@ -55,6 +55,7 @@ class Permission(models.Model):
     class Meta:
         db_table = 'tb_permission'
         verbose_name_plural = "权限"
+
 
 class Role(models.Model):
     name = models.CharField(max_length=20)

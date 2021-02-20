@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { getUserInfo } from "@/plugins/user.js"
 export default {
         data() {
 
@@ -59,20 +60,23 @@ export default {
                 doLogin(){
         this.$refs["user"].validate((valid) => {
             if(valid){
-                      this.$http.post('login',this.user).then(ret =>{
-                     if (ret.data.code == 10001){
+                      this.$http.post('/rbac/login/',this.user).then(ret =>{
+                     if (ret.data.token){
                        this.$message({
                         message: '登录成功',
                         type: 'success'
                         });
                         localStorage.setItem("token",ret.data.token)
+                        this.$http.get('/rbac/userinfo/').then(ret =>{
+                            console.log(ret)
+                        })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
                         this.$router.push({name:"index"})
-                     }else{
-                        this.$message({
+                     }
+                   }).catch(error => {
+                     this.$message({
                         message: '用户名或密码错误',
                         type: 'warnning'
                         });
-                     }
                    })
             }
         });

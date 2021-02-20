@@ -1,9 +1,46 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
 from django.views import View
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
+
+from rbac import models, serializers
+from rbac.auth import TokenAuth
+from rbac.utils import initMenu
 
 
-class TokenView(View):
+class TokenView(APIView):
+    authentication_classes = [TokenAuth]
     def get(self,request):
-        return "ok"
+        print(request.user)
+        return HttpResponse("ok")
+
+
+class MenuView(APIView):
+    def get(self,request):
+        queryset = models.Menu.objects.all()
+        se = serializers.MenuSerializer(instance=queryset,many=True)
+        data = initMenu(se.data)
+        return Response(data)
+
+
+class PermissionView(APIView):
+    def get(self,request):
+        queryset = models.Menu.objects.filter(parent_id__isnull=False )
+        se = serializers.MenuPermissionSerializer(instance=queryset, many=True)
+        return Response(se.data)
+
+
+class UserInfoView(APIView):
+    authentication_classes = [TokenAuth]
+
+    def get(self,request):
+        token = {"token": None}
+        token["token"] = request.META.get('HTTP_TOKEN')
+        valid_data = VerifyJSONWebTokenSerializer().validate(token)
+        user = valid_data['user']
+        print(user)
+        return Response("ok")

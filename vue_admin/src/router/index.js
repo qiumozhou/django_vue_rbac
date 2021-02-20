@@ -52,7 +52,7 @@ router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("token")
     if(!token){
           router.push({name:"login"})
-          // return
+       
       }
       next()
   }

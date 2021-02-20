@@ -8,6 +8,7 @@ import router from './router'
 import "./assets/fonts/font_2361663_kv0jeqzw1y/iconfont.css"
 import MyHttpServer from "@/plugins/http.js"
 import Mybread from "@/components/custom/Mybread.vue"
+import store from "./store"
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
@@ -17,6 +18,7 @@ Vue.component(Mybread.name,Mybread)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'
