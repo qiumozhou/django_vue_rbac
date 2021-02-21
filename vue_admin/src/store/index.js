@@ -6,17 +6,17 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state:{
         username:'',
-        menu:{},
-        permission:{}
+        menu:[],
+        permission:[]
     },
     mutations:{
-        getUserName(state,payload){
+        setUserName(state,payload){
             state.username = payload
         },
-        getMenu(state,payload){
+        setMenu(state,payload){
             state.menu = payload
         },
-        getPermiSsion(state,payload){
+        setPermiSsion(state,payload){
             state.permission = payload
         }
     }

@@ -3,7 +3,7 @@
     <el-container style="height: 100%">
   <el-header height="10%">
     <el-row :gutter="20">
-    <el-col :span="2" :offset="22"><div class="grid-content bg-purple" style="cursor:pointer" @click.prevent="doLogout">注销</div></el-col>
+    <el-col :span="2" :offset="22"><div class="grid-content bg-purple" style="cursor:pointer" @click.prevent="doLogout">{{ this.$store.state.username }}注销</div></el-col>
 </el-row>
   </el-header>
   <el-container>

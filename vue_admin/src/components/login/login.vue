@@ -19,7 +19,8 @@
 </template>
 
 <script>
-import { getUserInfo } from "@/plugins/user.js"
+import  { getUserInfo } from "@/plugins/user.js"
+import  axios  from "@/plugins/http.js"
 export default {
         data() {
 
@@ -60,16 +61,19 @@ export default {
                 doLogin(){
         this.$refs["user"].validate((valid) => {
             if(valid){
-                      this.$http.post('/rbac/login/',this.user).then(ret =>{
+                      axios.post('/rbac/login/',this.user).then(ret =>{
                      if (ret.data.token){
                        this.$message({
                         message: '登录成功',
                         type: 'success'
                         });
                         localStorage.setItem("token",ret.data.token)
-                        this.$http.get('/rbac/userinfo/').then(ret =>{
-                            console.log(ret)
-                        })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+
+                        getUserInfo().then(ret =>{
+                          this.$store.commit("setUserName",ret.data.data.username)
+                          this.$store.commit("setMenu",ret.data.data.menu)
+                        })       
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                         this.$router.push({name:"index"})
                      }
                    }).catch(error => {

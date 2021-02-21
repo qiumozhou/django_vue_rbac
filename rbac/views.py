@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
@@ -42,5 +42,13 @@ class UserInfoView(APIView):
         token["token"] = request.META.get('HTTP_TOKEN')
         valid_data = VerifyJSONWebTokenSerializer().validate(token)
         user = valid_data['user']
-        print(user)
-        return Response("ok")
+        roleList = models.User.objects.filter(username = user).first()
+        menuse = serializers.UserRoleSerializer(instance=roleList)
+        result = {
+            "code":200,
+            "msg":"ok",
+            "data":{"username":roleList.username,
+                    "menu":menuse.data['menu'],
+                    "permission":1}
+        }
+        return Response(result)
