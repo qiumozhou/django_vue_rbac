@@ -14,29 +14,14 @@
       text-color="#fff"
       active-text-color="#ffd04b"
       router>
-      <el-submenu index="1">
+      <el-submenu v-for="item in this.$store.state.menu" :index="item.title" :key="item.id">
         <template slot="title">
           <i class="el-icon-location"></i>
-          <span>用户管理</span>
+          <span> {{item.title}}</span>
         </template>
-         <el-menu-item index="users">
+         <el-menu-item :index="subitem.path" v-for="subitem  in item.children" :key="subitem.id">
               <i class="el-icon-s-check"></i>
-              <span>用户列表</span>
-         </el-menu-item>
-      </el-submenu>
-
-      <el-submenu index="2">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>权限管理</span>
-        </template>
-         <el-menu-item index="roles">
-              <i class="el-icon-s-check"></i>
-              <span>角色列表</span>
-         </el-menu-item>
-          <el-menu-item index="permissions">
-              <i class="el-icon-s-check"></i>
-              <span>权限列表</span>
+              <span>{{subitem.title}}</span>
          </el-menu-item>
       </el-submenu>
     </el-menu>
@@ -55,6 +40,13 @@ export default {
         data(){
           return{}
         },
+         beforeMount() {
+            const menu = this.$store.state.menu
+                if(menu.length == 0){
+                  this.$store.commit("setUserInfo")
+                }
+             
+          },
          methods: {
               handleOpen(key, keyPath) {
                 console.log(key, keyPath);

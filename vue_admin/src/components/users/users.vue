@@ -10,8 +10,8 @@
                 <div class="grid-content bg-purple">
                     <el-input placeholder="请输入内容" style=" width:150px"></el-input>
                     <el-button type="info" icon="el-icon-search">搜索</el-button>
-                    <el-button type="success" icon="el-icon-plus">添加客户</el-button>
-                </div>
+                    <el-button type="success" icon="el-icon-plus" :disabled = '!$store.state.permission.includes("添加用户")'>添加客户</el-button>
+                </div>  
             </el-col>
         </el-row>
         <el-row>
@@ -29,8 +29,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="address" label="操作" >
-                        <el-button type="primary" plain icon="el-icon-edit" circle></el-button>
-                        <el-button type="danger" plain icon="el-icon-delete" circle></el-button>                
+                        <el-button type="primary" plain icon="el-icon-edit" circle :disabled = '!$store.state.permission.includes("修改用户")'></el-button>
+                        <el-button type="danger" plain icon="el-icon-delete" circle :disabled = '!$store.state.permission.includes("删除用户")'></el-button>                
                 </el-table-column>
             </el-table>
         </el-row>

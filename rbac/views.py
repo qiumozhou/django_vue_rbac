@@ -49,6 +49,6 @@ class UserInfoView(APIView):
             "msg":"ok",
             "data":{"username":roleList.username,
                     "menu":menuse.data['menu'],
-                    "permission":1}
+                    "permission":menuse.data['permissions']}
         }
         return Response(result)

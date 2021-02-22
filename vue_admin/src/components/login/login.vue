@@ -68,12 +68,7 @@ export default {
                         type: 'success'
                         });
                         localStorage.setItem("token",ret.data.token)
-
-                        getUserInfo().then(ret =>{
-                          this.$store.commit("setUserName",ret.data.data.username)
-                          this.$store.commit("setMenu",ret.data.data.menu)
-                        })       
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                        this.$store.commit("setUserInfo")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
                         this.$router.push({name:"index"})
                      }
                    }).catch(error => {

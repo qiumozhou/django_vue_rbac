@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import store from '@/store/index.js'
 import Login from "@/components/login/login.vue"
 import Index from "@/components/index/index.vue"
 import Users from "@/components/users/users.vue"
@@ -29,7 +29,8 @@ const router =  new Router({
           name:"roles",
           path:"/roles",
           component:Roles
-        },{
+        }
+        ,{
           name:"permission",
           path:"/permissions",
           component:Permissions
@@ -52,9 +53,9 @@ router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("token")
     if(!token){
           router.push({name:"login"})
-       
       }
-      next()
+    
+    next()
   }
 
 })
