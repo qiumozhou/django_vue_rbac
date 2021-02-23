@@ -10,6 +10,8 @@ import "./assets/fonts/font_2361663_kv0jeqzw1y/iconfont.css"
 import Mybread from "@/components/custom/Mybread.vue"
 import store from "./store"
 
+
+
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 

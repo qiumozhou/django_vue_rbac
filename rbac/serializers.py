@@ -29,6 +29,7 @@ class MenuPermissionSerializer(serializers.Serializer):
 class UserRoleSerializer(serializers.Serializer):
     menu = serializers.SerializerMethodField()
     permissions = serializers.SerializerMethodField()
+    router = serializers.SerializerMethodField()
 
     def get_menu(self,obj):
         rolesList = obj.roles.all()
@@ -56,3 +57,12 @@ class UserRoleSerializer(serializers.Serializer):
             permissionList.extend(rolepermission)
         permissionList = list(set(permissionList))
         return [ item['name'] for item in PermissionSerializer(instance=permissionList,many=True).data]
+
+    def get_router(selfobj,obj):
+        rolesList = obj.roles.all()
+        routerList = []
+        for role in rolesList:
+            rolerouter = role.menus.filter(parent_id__isnull=False).all()
+            routerList.extend(rolerouter)
+        routerList = list(set(routerList))
+        return  MenuSerializer(instance=routerList,many=True).data

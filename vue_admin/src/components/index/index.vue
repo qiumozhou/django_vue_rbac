@@ -40,13 +40,7 @@ export default {
         data(){
           return{}
         },
-         beforeMount() {
-            const menu = this.$store.state.menu
-                if(menu.length == 0){
-                  this.$store.commit("setUserInfo")
-                }
-             
-          },
+
          methods: {
               handleOpen(key, keyPath) {
                 console.log(key, keyPath);
@@ -55,7 +49,7 @@ export default {
                 console.log(key, keyPath);
               },
               doLogout(){
-                localStorage.clear();
+                sessionStorage.clear();
                 this.$router.push({name:"login"});
                 this.$message({
                   message: '退出登录',

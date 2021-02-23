@@ -8,7 +8,7 @@ axios.defaults.headers.post['Content-Type'] = "application/json;charset=UTF-8"
 // axios.defaults.baseURL = "http://192.168.60.129:8000";
 
 axios.interceptors.request.use(function (config) {
-  const token = localStorage.getItem("token")
+  const token = sessionStorage.getItem("token")
   if(token){
                 config.headers = {
                     'token':token

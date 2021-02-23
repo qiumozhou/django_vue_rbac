@@ -67,7 +67,7 @@ export default {
                         message: '登录成功',
                         type: 'success'
                         });
-                        localStorage.setItem("token",ret.data.token)
+                        sessionStorage.setItem("token",ret.data.token)
                         this.$store.commit("setUserInfo")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
                         this.$router.push({name:"index"})
                      }

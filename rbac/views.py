@@ -1,7 +1,9 @@
+
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
+from django.utils.decorators import method_decorator
 from django.views import View
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -34,8 +36,15 @@ class PermissionView(APIView):
         return Response(se.data)
 
 
+
+def permission_required(func):
+    def wrapper(request, *args, **kwargs):
+        print('自定义装饰器被调用了')
+    return wrapper
+
 class UserInfoView(APIView):
     authentication_classes = [TokenAuth]
+
 
     def get(self,request):
         token = {"token": None}
@@ -49,6 +58,7 @@ class UserInfoView(APIView):
             "msg":"ok",
             "data":{"username":roleList.username,
                     "menu":menuse.data['menu'],
-                    "permission":menuse.data['permissions']}
+                    "permission":menuse.data['permissions'],
+                    "router":menuse.data['router']}
         }
         return Response(result)
