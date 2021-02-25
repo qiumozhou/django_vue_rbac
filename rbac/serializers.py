@@ -17,6 +17,12 @@ class PermissionSerializer(serializers.ModelSerializer):
         exclude = ["menu"]
 
 
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Role
+        exclude = ["users","menus","permissions"]
+
+
 class MenuPermissionSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     title = serializers.CharField()
@@ -66,3 +72,14 @@ class UserRoleSerializer(serializers.Serializer):
             routerList.extend(rolerouter)
         routerList = list(set(routerList))
         return  MenuSerializer(instance=routerList,many=True).data
+
+
+class UserSerializer(serializers.ModelSerializer):
+    roles = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.User
+        exclude = ["password","is_superuser","first_name","last_name","is_staff","is_admin","last_login","groups","user_permissions"]
+
+    def get_roles(self,obj):
+        return RoleSerializer(instance=obj.roles.all(),many=True).data

@@ -9,4 +9,7 @@ urlpatterns=[
     url(r'permission/',views.PermissionView.as_view()),
     url(r"login/", obtain_jwt_token),
     url(r"userinfo/", views.UserInfoView.as_view()),
+    url(r"^user/$", views.UserListView.as_view()),
+    url(r"^user/(?P<uid>\d+)/$", views.UserView.as_view()),
+    url(r"^role/$",views.RoleListView.as_view())
 ]
