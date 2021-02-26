@@ -46,7 +46,7 @@ export const asyncRoutes = [
 
 
 
-function menusToRoutes(data) {
+export function menusToRoutes(data) {
   const result = []
   const children = []
 
@@ -95,10 +95,6 @@ router.beforeEach((to, from, next) => {
       const menu = store.state.menu
     if(menu.length == 0){
       store.commit("setUserInfo")
-      const newRouter = menusToRoutes(store.state.router)
-      newRouter.forEach(el =>{
-          router.addRoute(el)
-      })
       router.push(window.location.hash.split("#/")[1])
     }
     next()

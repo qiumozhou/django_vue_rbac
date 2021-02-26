@@ -75,10 +75,7 @@ class UserListView(APIView):
         }
         return Response(result)
 
-    def put(self,request):
-        data = request
-        # se = serializers.
-        pass
+
 
 
 
@@ -93,6 +90,19 @@ class UserView(APIView):
             "code":10001,
             "data":se.data,
             "msg":"ok"
+        }
+        return Response(result)
+
+    def put(self,request,uid):
+        data = request.data
+        userbj = models.User.objects.filter(id = uid).first()
+        se = serializers.UserSerializer(instance=userbj,data = data)
+        se.is_valid(raise_exception=True)
+        se.save()
+        result = {
+            "code": 10001,
+            "data": se.data,
+            "msg": "ok"
         }
         return Response(result)
 

@@ -69,7 +69,7 @@ export default {
                         });
                         sessionStorage.setItem("token",ret.data.token)
                         this.$store.commit("setUserInfo")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-                        this.$router.push({name:"index"})
+                        this.$router.push('/users')
                      }
                    }).catch(error => {
                      this.$message({

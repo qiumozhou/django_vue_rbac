@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex' 
 import {getUserInfo} from "@/plugins/user.js"
-// import json from 'json'
+import router from "@/router/index.js"
+import { menusToRoutes } from "@/router/index.js"
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -23,12 +25,22 @@ const store = new Vuex.Store({
                     state.menu = ret.data.data.menu
                     state.permission = ret.data.data.permission
                     state.router = ret.data.data.router
+
+                    const newRouter = menusToRoutes(state.router)
+                    newRouter.forEach(el =>{
+                        router.addRoute(el)
+                    })
                 })
             }else{
                 state.username = sessionStorage.getItem("username")
                 state.menu = JSON.parse(sessionStorage.getItem("menu")) 
                 state.permission = JSON.parse(sessionStorage.getItem("permission")) 
                 state.router = JSON.parse(sessionStorage.getItem("router")) 
+
+                const newRouter = menusToRoutes(state.router)
+                newRouter.forEach(el =>{
+                    router.addRoute(el)
+                })
             }
             
         },

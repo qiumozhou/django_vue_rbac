@@ -82,4 +82,4 @@ class UserSerializer(serializers.ModelSerializer):
         exclude = ["password","is_superuser","first_name","last_name","is_staff","is_admin","last_login","groups","user_permissions"]
 
     def get_roles(self,obj):
-        return RoleSerializer(instance=obj.roles.all(),many=True).data
+        return [item["id"] for item in RoleSerializer(instance=obj.roles.all(),many=True).data]

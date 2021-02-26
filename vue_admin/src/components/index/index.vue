@@ -1,35 +1,36 @@
 <template>
 
-    <el-container style="height: 100%">
-  <el-header height="10%">
-    <el-row :gutter="20">
-    <el-col :span="2" :offset="22"><div class="grid-content bg-purple" style="cursor:pointer" @click.prevent="doLogout">{{ this.$store.state.username }}注销</div></el-col>
+    <el-container style="height: 100%;  solid #eee" >
+    <el-header height="60px" style="line-height: 60px">
+      <el-row type="flex" class="row-bg" justify="end">
+  <el-col :span="4">
+    <span style="margin-right:10px">欢迎您！{{ this.$store.state.username }}</span><span class="grid-content bg-purple" style="cursor:pointer;color:blue" @click.prevent="doLogout">注销</span></el-col>
 </el-row>
-  </el-header>
-  <el-container>
-    <el-aside width="200px">
-    <el-menu
-      default-active="1"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b"
-      router>
-      <el-submenu v-for="item in this.$store.state.menu" :index="item.title" :key="item.id">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span> {{item.title}}</span>
-        </template>
-         <el-menu-item :index="subitem.path" v-for="subitem  in item.children" :key="subitem.id">
-              <i class="el-icon-s-check"></i>
-              <span>{{subitem.title}}</span>
-         </el-menu-item>
-      </el-submenu>
-    </el-menu>
-  </el-aside>
-    <el-main>
-     <router-view></router-view>
-    </el-main>
-  </el-container>
+      </el-header>
+
+
+      <el-container>
+        
+        <el-aside width="200px"  style="background-color: rgb(238, 241, 246)">
+        <el-menu
+          default-active="1"
+          router>
+          <el-submenu v-for="item in this.$store.state.menu" :index="item.title" :key="item.id" >
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span> {{item.title}}</span>
+            </template>
+            <el-menu-item :index="subitem.path" v-for="subitem  in item.children" :key="subitem.id">
+                  <i class="el-icon-s-check"></i>
+                  <span>{{subitem.title}}</span>
+            </el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+        <el-main>
+        <router-view></router-view>
+        </el-main>
+      </el-container>
 </el-container>
 
 </template>
