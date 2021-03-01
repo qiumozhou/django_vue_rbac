@@ -7,7 +7,6 @@ def permission_required(permissionName):
     def outer(func):
         @wraps(func)
         def inner(self, request, *args, **kwargs):
-            print(request.session["permission"])
             if permissionName in request.session["permission"]:
                 return func(self,request,*args, **kwargs)
             else:

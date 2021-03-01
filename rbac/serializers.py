@@ -1,5 +1,6 @@
 
 from rest_framework import serializers
+from rest_framework.response import Response
 
 from rbac import models
 from rbac.utils import initMenu
@@ -14,13 +15,29 @@ class MenuSerializer(serializers.ModelSerializer):
 class PermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Permission
-        exclude = ["menu"]
+        fields = "__all__"
 
 
-class RoleSerializer(serializers.ModelSerializer):
+
+class RoleListSerializer(serializers.ModelSerializer):
+    menus = serializers.ListField(source="menu")
+    permissions = serializers.ListField(source="permission")
     class Meta:
         model = models.Role
-        exclude = ["users","menus","permissions"]
+        fields = "__all__"
+
+class RoleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.Role
+        fields = "__all__"
+
+
+# class RoleSerializer(serializers.ModelSerializer):
+#     menus = serializers.ListField(source="menuDetail")
+#     class Meta:
+#         model = models.Role
+#         fields = "__all__"
 
 
 class MenuPermissionSerializer(serializers.Serializer):
@@ -62,7 +79,7 @@ class UserRoleSerializer(serializers.Serializer):
             rolepermission = role.permissions.all()
             permissionList.extend(rolepermission)
         permissionList = list(set(permissionList))
-        return [ item['name'] for item in PermissionSerializer(instance=permissionList,many=True).data]
+        return [ item['code'] for item in PermissionSerializer(instance=permissionList,many=True).data]
 
     def get_router(selfobj,obj):
         rolesList = obj.roles.all()
@@ -74,12 +91,21 @@ class UserRoleSerializer(serializers.Serializer):
         return  MenuSerializer(instance=routerList,many=True).data
 
 
+
+
+
 class UserSerializer(serializers.ModelSerializer):
-    roles = serializers.SerializerMethodField()
 
     class Meta:
         model = models.User
-        exclude = ["password","is_superuser","first_name","last_name","is_staff","is_admin","last_login","groups","user_permissions"]
+        fields = ["id","username","password","gender","date_joined","email","is_active","roles"]
 
-    def get_roles(self,obj):
-        return [item["id"] for item in RoleSerializer(instance=obj.roles.all(),many=True).data]
+
+
+
+class PermissionListSerializer(serializers.ModelSerializer):
+    menu = serializers.CharField(source='menu.title')
+    class Meta:
+        model = models.Permission
+        fields = ["id","name","code","is_root","menu"]
+

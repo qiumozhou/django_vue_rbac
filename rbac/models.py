@@ -6,6 +6,7 @@ from django.db import models
 # Create your models here.
 
 
+
 class User(AbstractUser):
     GENDER_TYPE = (
         (1, "男"),
@@ -18,6 +19,10 @@ class User(AbstractUser):
     is_active = models.IntegerField(default=1)
     is_admin = models.IntegerField(default=0)
     last_login = models.DateTimeField(auto_now=True)
+
+    @property
+    def roles(self):
+        return self.roles.values("id").all()
 
     def __str__(self):
         return self.username
@@ -45,8 +50,8 @@ class Menu(models.Model):
 
 class Permission(models.Model):
     name = models.CharField(max_length=20)
-    model = models.CharField(max_length=20,null=True,blank=True)
-    method =  models.CharField(max_length=20)
+    is_root =  models.IntegerField(default=1)
+    code = models.CharField(max_length=30,default=1)
     menu = models.ForeignKey("Menu",on_delete=models.CASCADE,related_name="permissions")
 
     def __str__(self):
@@ -59,9 +64,19 @@ class Permission(models.Model):
 
 class Role(models.Model):
     name = models.CharField(max_length=20)
-    users = models.ManyToManyField("User",related_name="roles")
-    menus = models.ManyToManyField("Menu",related_name="roles")
-    permissions = models.ManyToManyField("permission",related_name="roles")
+    users = models.ManyToManyField("User",related_name="roles",blank=True,null=True)
+    menus = models.ManyToManyField("Menu",related_name="roles",blank=True,null=True)
+    permissions = models.ManyToManyField("permission",related_name="roles",blank=True,null=True)
+
+    @property
+    def menu(self):
+        return self.menus.values("title","id").filter(parent_id__isnull = False).all()
+
+    @property
+    def permission(self):
+        return self.permissions.values("name","id").all()
+
+
 
     def __str__(self):
         return self.name
