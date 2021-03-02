@@ -16,33 +16,13 @@ from rbac.permissions import permission_required
 from rbac.utils import initMenu
 
 
-class TokenView(APIView):
-    authentication_classes = [TokenAuth]
-    def get(self,request):
-        print(request.user)
-        return HttpResponse("ok")
-
-
-class MenuView(APIView):
-    def get(self,request):
-        queryset = models.Menu.objects.all()
-        se = serializers.MenuSerializer(instance=queryset,many=True)
-        data = initMenu(se.data)
-        return Response(data)
-
-
-# class PermissionView(APIView):
-#     def get(self,request):
-#         queryset = models.Menu.objects.filter(parent_id__isnull=False)
-#         se = serializers.MenuPermissionSerializer(instance=queryset, many=True)
-#         return Response(se.data)
-
-
 
 
 
 class UserInfoView(APIView):
     authentication_classes = [TokenAuth]
+
+    # 获取用户信息
     def get(self,request):
         token = {"token": None}
         token["token"] = request.META.get('HTTP_TOKEN')
@@ -62,9 +42,10 @@ class UserInfoView(APIView):
         return Response(result)
 
 
+
 class UserListView(APIView):
     authentication_classes = [TokenAuth]
-
+    #获取用户列表
     def get(self, request):
 
         obj = models.User.objects.all()
@@ -77,6 +58,7 @@ class UserListView(APIView):
         return Response(result)
 
     @permission_required("user_add")
+    #新增用户
     def post(self,request):
         data = request.data
         se = serializers.UserSerializer(data=data)
@@ -96,6 +78,7 @@ class UserListView(APIView):
 class UserView(APIView):
     authentication_classes = [TokenAuth]
 
+   #查看用户详情
     @permission_required("user_view")
     def get(self, request, uid):
         obj = models.User.objects.all()
@@ -107,6 +90,7 @@ class UserView(APIView):
         }
         return Response(result)
 
+   #修改用户信息
     @permission_required("user_reset")
     def put(self,request,uid):
         data = request.data
@@ -125,7 +109,7 @@ class UserView(APIView):
 
 class RoleListView(APIView):
     authentication_classes = [TokenAuth]
-
+    #获取角色列表
     def get(self, request):
         roledata = models.Role.objects.all()
         se = serializers.RoleListSerializer(instance=roledata,many=True)
@@ -140,6 +124,8 @@ class RoleListView(APIView):
 class RoleView(APIView):
     authentication_classes = [TokenAuth]
 
+    #查看角色详情
+    @permission_required("role_view")
     def get(self, request,uid):
         roledata = models.Role.objects.filter(id=uid).first()
         se = serializers.RoleSerializer(instance=roledata)
@@ -150,6 +136,8 @@ class RoleView(APIView):
         }
         return Response(result)
 
+    #修改角色信息
+    @permission_required("role_reset")
     def put(self,request,uid):
         per_obj = models.Role.objects.filter(id=uid).first()
         per_data = request.data
@@ -167,6 +155,7 @@ class RoleView(APIView):
 class PermissionListView(APIView):
     authentication_classes = [TokenAuth]
 
+    #查看权限列表
     def get(self, request):
         permissiondata = models.Permission.objects.all()
         se = serializers.PermissionListSerializer(instance=permissiondata, many=True)
@@ -177,6 +166,7 @@ class PermissionListView(APIView):
         }
         return Response(result)
 
+    #新增权限
     @permission_required("permission_add")
     def post(self,request):
         data = request.data
@@ -194,6 +184,8 @@ class PermissionListView(APIView):
 class PermissionView(APIView):
     authentication_classes = [TokenAuth]
 
+    #修改权限
+    @permission_required("permission_reset")
     def put(self,request,uid):
         per_obj = models.Permission.objects.filter(id = uid).first()
         per_data = request.data
@@ -207,6 +199,8 @@ class PermissionView(APIView):
         }
         return Response(result)
 
+    #删除权限
+    @permission_required("permission_delete")
     def delete(self,request,uid):
         obj = models.Permission.objects.filter(id = uid).first()
         obj.delete()
@@ -219,6 +213,8 @@ class PermissionView(APIView):
 
 
 class MenuListView(APIView):
+
+    #获取菜单列表
     def get(self,request):
         queryset = models.Menu.objects.filter(parent_id__isnull = False)
         se = serializers.MenuSerializer(instance=queryset,many=True)
@@ -232,6 +228,7 @@ class MenuListView(APIView):
 
 class TreemenuView(APIView):
 
+    #获取结构化菜单列表
     def get(self,request):
         queryset = models.Menu.objects.all()
         se = serializers.MenuSerializer(instance=queryset,many=True)

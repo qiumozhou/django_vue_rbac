@@ -33,12 +33,6 @@ class RoleSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-# class RoleSerializer(serializers.ModelSerializer):
-#     menus = serializers.ListField(source="menuDetail")
-#     class Meta:
-#         model = models.Role
-#         fields = "__all__"
-
 
 class MenuPermissionSerializer(serializers.Serializer):
     id = serializers.IntegerField()
