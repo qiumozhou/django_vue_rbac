@@ -235,6 +235,7 @@ export default {
     },
     editUser(data) {
       this.selectUser = deepClone(data);
+      console.log(999,this.selectUser )
       this.edit = true;
     },
     setStatus(data) {

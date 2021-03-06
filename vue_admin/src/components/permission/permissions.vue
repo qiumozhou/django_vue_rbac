@@ -30,11 +30,7 @@
             </el-table-column>
             <el-table-column prop="code" label="权限码"> </el-table-column>
             <el-table-column prop="is_root" label="是否根权限" :formatter="rootFormmat"> </el-table-column>
-            <el-table-column
-              prop="menu"
-              label="所属菜单"
-            >
-            </el-table-column>
+           
            
             <el-table-column prop="address" label="操作">
               <template slot-scope="scope">
@@ -222,6 +218,7 @@ export default {
       });
     },
     editUser(data) {
+      console.log(444,data)
       this.selectUser = deepClone(data);
 
       this.edit = true;

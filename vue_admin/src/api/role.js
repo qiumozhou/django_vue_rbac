@@ -14,5 +14,16 @@ function editRole(id, data) {
 }
 
 
+function addRole(data) {
+    return axios.post('/rbac/role/', data)
+}
 
-export { getRoleList, getRoleInfo, editRole }
+function deleteRole(id) {
+    return axios.delete('/rbac/role/' + id + '/')
+}
+
+
+
+
+
+export { getRoleList, getRoleInfo, editRole, addRole, deleteRole }

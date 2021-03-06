@@ -7,6 +7,7 @@ from rbac.utils import initMenu
 
 
 class MenuSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = models.Menu
         fields = "__all__"
@@ -54,16 +55,8 @@ class UserRoleSerializer(serializers.Serializer):
         for role in rolesList:
             singleRoleMenuList = role.menus.all()
             menuList.extend(singleRoleMenuList)
-        menuListLast = []
-        total = len(menuList)
-        for i in range(0,total):
-            for j in range(i+1,total):
-                if menuList[i].id == menuList[j].id:
-                    break
-                if j == total-1 and menuList[i].id != menuList[j].id:
-                    menuListLast.append(menuList[i])
-        menuListLast.append(menuList[-1])
-        se = MenuSerializer(instance=menuListLast,many=True)
+        menuList = list(set(menuList))
+        se = MenuSerializer(instance=menuList, many=True)
         return initMenu(se.data)
 
     def get_permissions(self,obj):
@@ -98,7 +91,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PermissionListSerializer(serializers.ModelSerializer):
-    menu = serializers.CharField(source='menu.title')
+    # menu = serializers.CharField(source='menu.title')
     class Meta:
         model = models.Permission
         fields = ["id","name","code","is_root","menu"]

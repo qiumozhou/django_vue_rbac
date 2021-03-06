@@ -1,12 +1,16 @@
 import axios from "@/plugins/http.js"
 
 
-function getMenuList() {
-    return axios.get('/rbac/menu/')
+function getTreeMenu() {
+    return axios.get('/rbac/treemenu/')
 }
 
-function editUser(id, data) {
-    return axios.put('/rbac/user/' + id + "/", data)
+function getMenuList() {
+    return axios.get('/rbac/rootmenu/')
+}
+
+function editMenu(id, data) {
+    return axios.put('/rbac/menu/' + id + "/", data)
 }
 
 
@@ -15,9 +19,6 @@ function addUser(data) {
 }
 
 
-function getTreeMenu() {
-    return axios.get('/rbac/treemenu/')
-}
 
 
-export { getMenuList, editUser, addUser, getTreeMenu }
+export { getTreeMenu, getMenuList, editMenu }

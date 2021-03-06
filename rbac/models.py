@@ -40,6 +40,8 @@ class Menu(models.Model):
     component = models.CharField(max_length=50,null=True,blank=True)
     parent_id = models.ForeignKey('self',null=True,blank=True,on_delete=models.CASCADE)
 
+
+
     def __str__(self):
         return self.title
 

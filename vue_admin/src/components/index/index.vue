@@ -24,7 +24,7 @@
             :key="item.id"
           >
             <template slot="title">
-              <i class="el-icon-location"></i>
+              <i :class="item.icon"></i>
               <span> {{ item.title }}</span>
             </template>
             <el-menu-item
@@ -32,7 +32,7 @@
               v-for="subitem in item.children"
               :key="subitem.id"
             >
-              <i class="el-icon-s-check"></i>
+              <i :class="subitem.icon"></i>
               <span>{{ subitem.title }}</span>
             </el-menu-item>
           </el-submenu>

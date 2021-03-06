@@ -27,7 +27,7 @@
           >
             <el-table-column prop="name" label="角色名称"> </el-table-column>
 
-            <el-table-column label="菜单" >
+            <el-table-column label="菜单">
               <template slot-scope="scope">
                 <div slot="reference" class="name-wrapper">
                   <el-tag
@@ -40,7 +40,7 @@
               </template>
             </el-table-column>
 
-            <el-table-column label="权限" >
+            <el-table-column label="权限">
               <template slot-scope="scope">
                 <div slot="reference" class="name-wrapper">
                   <el-tag
@@ -73,7 +73,7 @@
                   :disabled="
                     !$store.state.permission.includes('permission_delete')
                   "
-                  @click="deletepermission(scope.row)"
+                  @click="delete_role(scope.row)"
                 ></el-button>
               </template>
             </el-table-column>
@@ -95,29 +95,36 @@
 
     <el-dialog title="修改角色" :visible.sync="edit" width="60%">
       <el-row :gutter="4">
-  
-<el-form label-position="left" label-width="100px">
-        <el-form-item label="角色名称">
-          <el-input v-model="selectUser.name"></el-input>
-        </el-form-item>
-       </el-form>
-  <el-col :md="4" :offset="2" >
-      <div class="grid-content bg-purple-light"><el-tree
-            ref="tree"
-            :data="menuData"
-            show-checkbox
-            node-key="id"
-            :default-expanded-keys="chenckedmenu"
-            :default-checked-keys="chenckedmenu"
-            :props="defaultProps">
-            </el-tree></div>
-      </el-col>
-  <el-col :md="16" >
-      <div class="grid-content bg-purple"> <el-transfer :titles="['未拥有权限', '已拥有权限']" :props="defaultoption" v-model="checkedpermission" :data="permissiData"></el-transfer></div>
-      </el-col>
-  
-  
-</el-row>
+        <el-form label-position="left" label-width="100px">
+          <el-form-item label="角色名称">
+            <el-input v-model="selectUser.name"></el-input>
+          </el-form-item>
+        </el-form>
+        <el-col :md="4" :offset="2">
+          <div class="grid-content bg-purple-light">
+            <el-tree
+              ref="tree"
+              :data="menuData"
+              show-checkbox
+              node-key="id"
+              :default-expanded-keys="chenckedmenu"
+              :default-checked-keys="chenckedmenu"
+              :props="defaultProps"
+            >
+            </el-tree>
+          </div>
+        </el-col>
+        <el-col :md="16">
+          <div class="grid-content bg-purple">
+            <el-transfer
+              :titles="['未拥有权限', '已拥有权限']"
+              :props="defaultoption"
+              v-model="checkedpermission"
+              :data="permissiData"
+            ></el-transfer>
+          </div>
+        </el-col>
+      </el-row>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="edit = false">取 消</el-button>
@@ -125,58 +132,55 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="新增权限" :visible.sync="add" width="30%">
-      <el-form label-position="left" label-width="100px">
-        <el-form-item label="权限名称">
-          <el-input v-model="newUser.name"></el-input>
-        </el-form-item>
-
-        <el-form-item label="权限码">
-          <el-input v-model="newUser.code"></el-input>
-        </el-form-item>
-
-        <el-form-item label="是否根权限">
-          <el-select v-model="newUser.is_root" style="width: 100%">
-            <el-option
-              v-for="item in rootoptions"
-              :key="item.label"
-              :label="item.label"
-              :value="item.value"
+    <el-dialog title="新增角色" :visible.sync="add" width="60%">
+      <el-row :gutter="4">
+        <el-form label-position="left" label-width="100px">
+          <el-form-item label="角色名称">
+            <el-input v-model="newRole.name"></el-input>
+          </el-form-item>
+        </el-form>
+        <el-col :md="4" :offset="2">
+          <div class="grid-content bg-purple-light">
+            <el-tree
+              ref="newtree"
+              :data="menuData"
+              show-checkbox
+              node-key="id"
+              :props="defaultProps"
             >
-            </el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="所属菜单">
-          <el-select
-            v-model="newUser.menu"
-            placeholder="请选择"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in menuoptions"
-              :key="item.id"
-              :label="item.title"
-              :value="item.id"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
+            </el-tree>
+          </div>
+        </el-col>
+        <el-col :md="16">
+          <div class="grid-content bg-purple">
+            <el-transfer
+              :titles="['未拥有权限', '已拥有权限']"
+              :props="defaultoption"
+              v-model="newRole.permissions"
+              :data="permissiData"
+            ></el-transfer>
+          </div>
+        </el-col>
+      </el-row>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="edit = false">取 消</el-button>
-        <el-button type="primary" @click="addNewUser()">确 定</el-button>
+        <el-button type="primary" @click="addUser()">确 定</el-button>
       </span>
     </el-dialog>
-   
   </div>
 </template>
 
 <script>
-import { getRoleList,getRoleInfo,editRole } from "@/api/role.js";
-import { getMenuList,getTreeMenu } from "@/api/menu.js";
-import {getPermissionList} from "@/api/permission.js"
+import {
+  getRoleList,
+  getRoleInfo,
+  editRole,
+  addRole,
+  deleteRole,
+} from "@/api/role.js";
+import { getMenuList, getTreeMenu } from "@/api/menu.js";
+import { getPermissionList } from "@/api/permission.js";
 import { deepClone } from "@/utils/index.js";
 
 export default {
@@ -190,20 +194,21 @@ export default {
         { label: "否", value: 0 },
       ],
       roleList: [],
-      chenckedmenu:[],
+      chenckedmenu: [],
       newUser: {},
       currentPage1: 5,
       currentPage2: 5,
       currentPage3: 5,
       currentPage4: 4,
       selectUser: {},
+      newRole: {},
       menuoptions: [],
-      permissiData:[],
+      permissiData: [],
       menuData: [],
-      checkedpermission:[],
-      defaultoption:{
-          key:"id",
-          label:"name"
+      checkedpermission: [],
+      defaultoption: {
+        key: "id",
+        label: "name",
       },
       defaultProps: {
         children: "children",
@@ -224,12 +229,13 @@ export default {
     getMenuList().then((ret) => {
       this.menuoptions = ret.data.data;
     });
-    getTreeMenu().then(ret=>{
-        this.menuData = ret.data.data
+    getTreeMenu().then((ret) => {
+      console.log(44, ret.data.data);
+      this.menuData = ret.data.data;
     }),
-    getPermissionList().then(ret=>{
-        this.permissiData = ret.data.data
-    })
+      getPermissionList().then((ret) => {
+        this.permissiData = ret.data.data;
+      });
   },
   methods: {
     rootFormmat(row, column) {
@@ -239,11 +245,45 @@ export default {
         return "否";
       }
     },
+    delete_role(data) {
+      deleteRole(data.id).then((ret) => {
+        if ((ret.data.code = 10001)) {
+          this.$message({
+            showClose: true,
+            message: "删除成功",
+            type: "success",
+          });
+        }
+
+        getRoleList().then((ret) => {
+          this.tableData = ret.data.data;
+        });
+      });
+    },
+    addUser() {
+      this.newRole.menus = this.$refs.newtree
+        .getCheckedKeys()
+        .concat(this.$refs.newtree.getHalfCheckedKeys());
+      addRole(this.newRole).then((ret) => {
+        if ((ret.data.code = 10001)) {
+          this.$message({
+            showClose: true,
+            message: "添加成功",
+            type: "success",
+          });
+          getRoleList().then((ret) => {
+            this.tableData = ret.data.data;
+          });
+          this.add = false;
+        }
+      });
+    },
 
     resetUser() {
-        this.selectUser.permissions = this.checkedpermission
-        this.selectUser.menus = this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys())
-        console.log(111,)
+      this.selectUser.permissions = this.checkedpermission;
+      this.selectUser.menus = this.$refs.tree
+        .getCheckedKeys()
+        .concat(this.$refs.tree.getHalfCheckedKeys());
       editRole(this.selectUser.id, this.selectUser).then((ret) => {
         if ((ret.data.code = 10001)) {
           this.$message({
@@ -252,22 +292,20 @@ export default {
             type: "success",
           });
         }
-        getRoleList().then(ret => {
+        getRoleList().then((ret) => {
           this.tableData = ret.data.data;
-        
         });
         this.edit = false;
       });
     },
     editUser(data) {
       this.selectUser = deepClone(data);
-      getRoleInfo(this.selectUser.id).then(ret=>{
-       this.chenckedmenu = ret.data.data.menus;
-       this.checkedpermission = ret.data.data.permissions
-           this.edit = true;
-      }
-      )
-     
+      getRoleInfo(this.selectUser.id).then((ret) => {
+        console.log(222, ret.data.data.menus);
+        this.chenckedmenu = ret.data.data.menus;
+        this.checkedpermission = ret.data.data.permissions;
+        this.edit = true;
+      });
     },
     deletepermission(data) {
       deletePermission(data.id).then((ret) => {

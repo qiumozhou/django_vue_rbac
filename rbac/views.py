@@ -120,6 +120,19 @@ class RoleListView(APIView):
         }
         return Response(result)
 
+    #添加新角色
+    def post(self,request):
+        data = request.data
+        se = serializers.RoleSerializer(data=data)
+        se.is_valid(raise_exception = True)
+        se.save()
+        result = {
+            "code": 10001,
+            "data": se.data,
+            "msg": "ok"
+        }
+        return Response(result)
+
 
 class RoleView(APIView):
     authentication_classes = [TokenAuth]
@@ -150,6 +163,18 @@ class RoleView(APIView):
             "msg": "ok"
         }
         return Response(result)
+
+    #删除角色
+    @permission_required("role_delete")
+    def delete(self,request,uid):
+        obj = models.Role.objects.filter(id = uid).first()
+        obj.delete()
+        result = {
+            "code": 10001,
+            "msg": "ok"
+        }
+        return Response(result)
+
 
 
 class PermissionListView(APIView):
@@ -225,6 +250,23 @@ class MenuListView(APIView):
         }
         return Response(result)
 
+class MenuView(APIView):
+    authentication_classes = [TokenAuth]
+    #修改菜单
+    def put(self,request,uid):
+        obj = models.Menu.objects.filter(id = uid).first()
+        data = request.data
+        se = serializers.MenuSerializer(instance=obj,data = data)
+        se.is_valid(raise_exception=True)
+        se.save()
+        result = {
+            "code": 10001,
+            "data": se.data,
+            "msg": "ok"
+        }
+        return Response(result)
+
+
 
 class TreemenuView(APIView):
 
@@ -235,6 +277,19 @@ class TreemenuView(APIView):
         result = {
             "code": 10001,
             "data": initMenu(se.data),
+            "msg": "ok"
+        }
+        return Response(result)
+
+class RootMenuView(APIView):
+
+    # 获取根菜单课表
+    def get(self,request):
+        queryset = models.Menu.objects.filter(parent_id__isnull=True)
+        se = serializers.MenuSerializer(instance=queryset, many=True)
+        result = {
+            "code": 10001,
+            "data": se.data,
             "msg": "ok"
         }
         return Response(result)
