@@ -1,0 +1,4 @@
+Django==3.1.4
+PyMySQL==0.10.0
+djangorestframework_jwt==1.11.0
+djangorestframework==3.12.2
