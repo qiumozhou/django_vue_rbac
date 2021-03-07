@@ -3,7 +3,11 @@
 #### 项目简介
 一个基于 Django、Django REST framework（DRF）、Vue的前后端分离的后台管理系统,可轻松添加业务页面及功能.
 
+#### 技术栈
 
+前端:Vue + Vue-Router + Vuex + Element-Ui
+后台:Django+Django-drf+JWT
+数据库:Mysql
 
 #### 系统预览
 <table>
