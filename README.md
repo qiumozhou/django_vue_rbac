@@ -1,7 +1,7 @@
 <h1 style="text-align: center">RBAC权限管理系统</h1>
 
 #### 项目简介
-一个基于 Django、Django REST framework（DRF）、Vue的前后端分离的后台管理系统,前后台均做了权限校验,**可精确到按钮及权限**,可轻松添加业务页面及功能.
+一个基于 Django、Django REST framework（DRF）、Vue的前后端分离的后台管理系统,前后台均做了权限校验,**可精确到按钮级权限**,可轻松添加业务页面及功能.
 
 #### 技术栈
 
