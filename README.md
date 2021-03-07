@@ -8,7 +8,7 @@
 #### 系统预览
 <table>
     <tr>
-        <td><img src="https://images.cnblogs.com/cnblogs_com/heheda005/1942678/o_2103070313551.png" border="0" /></td>
+        <td><img src="https://images.cnblogs.com/cnblogs_com/heheda005/1942678/o_2103070314276.png" border="0" /></td>
         <td><img src="https://images.cnblogs.com/cnblogs_com/heheda005/1942678/o_2103070314042.png" border="0" /></td>
     </tr>
     <tr>
