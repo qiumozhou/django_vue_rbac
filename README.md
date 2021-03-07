@@ -9,15 +9,15 @@
 <table>
     <tr>
         <td><img src="https://github.com/qiumozhou/django_vue_rbac/blob/main/vue_admin/src/assets/img/1.png" border="0" /></td>
-        <td><img src="https://images.cnblogs.com/cnblogs_com/heheda005/1942678/o_2103070314042.png" border="0" /></td>
+        <td><img src="https://github.com/qiumozhou/django_vue_rbac/blob/main/vue_admin/src/assets/img/2.png" border="0" /></td>
     </tr>
     <tr>
-        <td><img src="https://images.cnblogs.com/cnblogs_com/heheda005/1942678/o_2103070314113.png" border="0" /></td>
-        <td><img src="https://images.cnblogs.com/cnblogs_com/heheda005/1942678/o_2103070314164.png" border="0" /></td>
+        <td><img src="https://github.com/qiumozhou/django_vue_rbac/blob/main/vue_admin/src/assets/img/3.png" border="0" /></td>
+        <td><img src="https://github.com/qiumozhou/django_vue_rbac/blob/main/vue_admin/src/assets/img/4.png" border="0" /></td>
     </tr>
     <tr>
-        <td><img src="https://images.cnblogs.com/cnblogs_com/heheda005/1942678/o_2103070314225.png" border="0" /></td>
-        <td><img src="https://images.cnblogs.com/cnblogs_com/heheda005/1942678/o_2103070314276.png" border="0" /></td>
+        <td><img src="https://github.com/qiumozhou/django_vue_rbac/blob/main/vue_admin/src/assets/img/5.png" border="0" /></td>
+        <td><img src="https://github.com/qiumozhou/django_vue_rbac/blob/main/vue_admin/src/assets/img/6.png" border="0" /></td>
     </tr>
 </table>
 
