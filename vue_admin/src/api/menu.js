@@ -14,11 +14,17 @@ function editMenu(id, data) {
 }
 
 
-function addUser(data) {
-    return axios.post('/rbac/user/', data)
+function addMenu(data) {
+    return axios.post('/rbac/menu/', data)
+}
+
+
+function deleteMenu(id) {
+    return axios.delete('/rbac/menu/' + id + "/")
 }
 
 
 
 
-export { getTreeMenu, getMenuList, editMenu }
+
+export { getTreeMenu, getMenuList, editMenu, addMenu, deleteMenu }

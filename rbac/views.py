@@ -249,6 +249,21 @@ class MenuListView(APIView):
             "msg": "ok"
         }
         return Response(result)
+    
+    #新增菜单
+    def post(self,request):
+        data = request.data
+        se = serializers.MenuSerializer(data = data)
+        se.is_valid(raise_exception=True)
+        se.save()
+        result = {
+                    "code": 10001,
+                    "data": se.data,
+                    "msg": "ok"
+                }
+        return Response(result)
+
+
 
 class MenuView(APIView):
     authentication_classes = [TokenAuth]
@@ -262,6 +277,16 @@ class MenuView(APIView):
         result = {
             "code": 10001,
             "data": se.data,
+            "msg": "ok"
+        }
+        return Response(result)
+
+    #删除菜单
+    def delete(self,request,uid):
+        obj = models.Menu.objects.filter(id = uid).first()
+        obj.delete()
+        result = {
+            "code": 10001,
             "msg": "ok"
         }
         return Response(result)

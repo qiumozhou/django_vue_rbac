@@ -41,7 +41,7 @@
                   icon="el-icon-edit"
                   circle
                   :disabled="!$store.state.permission.includes('menu_reset')"
-                  @click="editUser(scope.row)"
+                  @click="edit_menu(scope.row)"
                 ></el-button>
                 <el-button
                   type="danger"
@@ -49,7 +49,7 @@
                   icon="el-icon-delete"
                   circle
                   :disabled="!$store.state.permission.includes('menu_delete')"
-                  @click="deletepermission(scope.row)"
+                  @click="delete_menu(scope.row)"
                 ></el-button>
               </template>
             </el-table-column>
@@ -107,31 +107,29 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="新增权限" :visible.sync="add" width="30%">
+    <el-dialog title="新增菜单" :visible.sync="add" width="30%">
       <el-form label-position="left" label-width="100px">
-        <el-form-item label="权限名称">
-          <el-input v-model="newUser.name"></el-input>
+        <el-form-item label="菜单名称">
+          <el-input v-model="newUser.title"></el-input>
         </el-form-item>
 
-        <el-form-item label="权限码">
-          <el-input v-model="newUser.code"></el-input>
+        <el-form-item label="路径">
+          <el-input v-model="newUser.path"></el-input>
         </el-form-item>
 
-        <el-form-item label="是否根权限">
-          <el-select v-model="newUser.is_root" style="width: 100%">
-            <el-option
-              v-for="item in rootoptions"
-              :key="item.label"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
+          <el-form-item label="图标">
+          <el-input v-model="newUser.icon"></el-input>
         </el-form-item>
 
-        <el-form-item label="所属菜单">
+          <el-form-item label="组件名称">
+          <el-input v-model="newUser.component"></el-input>
+        </el-form-item>
+
+      
+
+        <el-form-item label="父菜单">
           <el-select
-            v-model="newUser.menu"
+            v-model="newUser.parent_id"
             placeholder="请选择"
             style="width: 100%"
           >
@@ -155,7 +153,7 @@
 </template>
 
 <script>
-import { getTreeMenu, editMenu, getMenuList } from "@/api/menu.js";
+import { getTreeMenu, editMenu, getMenuList,addMenu,deleteMenu } from "@/api/menu.js";
 import { deepClone } from "@/utils/index.js";
 
 export default {
@@ -204,26 +202,25 @@ export default {
             type: "success",
           });
         }
-        getMenuList().then((ret) => {
+        getTreeMenu().then((ret) => {
           this.tableData = ret.data.data;
         });
         this.edit = false;
       });
     },
-    editUser(data) {
+    edit_menu(data) {
       this.selectUser = deepClone(data);
-      console.log(333, this.selectUser);
       this.edit = true;
     },
-    deletepermission(data) {
-      deletePermission(data.id).then((ret) => {
+    delete_menu(data) {
+      deleteMenu(data.id).then((ret) => {
         if ((ret.data.code = 10001)) {
           this.$message({
             showClose: true,
             message: "删除成功",
             type: "success",
           });
-          getPermissionList().then((ret) => {
+          getTreeMenu().then((ret) => {
             this.tableData = ret.data.data;
           });
         }
@@ -234,7 +231,7 @@ export default {
       editUser(data.id, data);
     },
     addNewUser() {
-      addPermission(this.newUser)
+      addMenu(this.newUser)
         .then((ret) => {
           if (ret.data.code == 10001) {
             this.$message({
@@ -244,7 +241,7 @@ export default {
             });
             this.add = false;
             this.newUser = {};
-            getPermissionList().then((ret) => {
+            getTreeMenu().then((ret) => {
               this.tableData = ret.data.data;
             });
           }
